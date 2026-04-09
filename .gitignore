@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# local browser/runtime state
+playwright/.auth/
+.browser/
+
+# local temp outputs if generated inside the repo
+xhs_ops_run*/
+xhs_generated_cards*/
+xhs_post_assets/
+xhs_studio_run/
+xhs_test_run/
+xhs_image_pipeline/
+xhs_stock_plan/
