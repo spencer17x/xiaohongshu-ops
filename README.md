@@ -1,15 +1,13 @@
 # Xiaohongshu Ops
 
-中文 / English
+> English version: see [README.en.md](./README.en.md)
 
-一个用于小红书（RedNote / Xiaohongshu）自动化运营的 OpenClaw skill。  
-An OpenClaw skill for end-to-end Xiaohongshu (RedNote) operations.
+一个用于小红书（RedNote / Xiaohongshu）自动化运营的 OpenClaw skill。
 
 ---
 
-## 功能概览 / What it does
+## 功能概览
 
-### 中文
 - 配置可复用的小红书运营 profile
 - 读取 `data/xiaohongshu/` 下的本地规则与风格笔记
 - 从 topic / angle 一路编排到可发布资产
@@ -22,34 +20,21 @@ An OpenClaw skill for end-to-end Xiaohongshu (RedNote) operations.
 - 通过独立浏览器发布链自动发布到小红书
 - 支持 daily reference-only 自动学习，不会黑箱改主 profile
 
-### English
-- Configure a reusable Xiaohongshu operating profile
-- Read local operating rules and style notes from `data/xiaohongshu/`
-- Orchestrate the workflow from topic/angle to publish-ready assets
-- Generate Xiaohongshu-style titles, body copy, and page structure
-- Support mixed Chinese/English title rewriting within 20 characters
-- Keep body length within the configured limit
-- Support image modes: `stock`, `cards-lite`, `mixed`
-- Prefer real relevant imagery first and use lightweight cards as fallback
-- Assemble post assets such as `post.json`, `pages.json`, and PNG output directories
-- Publish through the dedicated independent browser flow
-- Support daily reference-only auto learning without silently mutating the main profile
-
 ---
 
-## 目录结构 / Directory layout
+## 目录结构
 
 ```text
 xiaohongshu-ops/
 ├── README.md
+├── README.en.md
 ├── SKILL.md
 ├── .gitignore
 ├── references/
 └── scripts/
 ```
 
-本地运行时配置推荐放在：  
-Suggested local runtime data directory:
+本地运行时配置推荐放在：
 
 ```text
 data/xiaohongshu/
@@ -60,27 +45,23 @@ data/xiaohongshu/
 
 ---
 
-## 目录说明 / File responsibilities
+## 文件职责
 
 ### `SKILL.md`
-- 中文：skill 主说明，给 agent 用。
-- English: main skill entrypoint and instructions for the agent.
+skill 主说明，给 agent 用。
 
 ### `references/`
-- 中文：按需加载的参考文档，放规则、流程、图片来源、发布说明等。
-- English: on-demand reference docs for workflow, rules, image sourcing, and publish details.
+按需加载的参考文档，放规则、流程、图片来源、发布说明等。
 
 ### `scripts/`
-- 中文：低自由度执行脚本，适合稳定、可重复的步骤。
-- English: low-freedom helper scripts for deterministic and repeatable execution.
+低自由度执行脚本，适合稳定、可重复的步骤。
 
 ### `data/xiaohongshu/`
-- 中文：本地配置层，不一定要跟 skill 一起公开。
-- English: local runtime configuration layer; does not have to be published with the skill.
+本地配置层，不一定要跟 skill 一起公开。
 
 ---
 
-## 关键脚本 / Key scripts
+## 关键脚本
 
 - `scripts/init_profile.js` — 初始化 / 更新 profile
 - `scripts/run_ops_once.js` — 跑一轮完整小红书 ops 流程
@@ -93,47 +74,33 @@ data/xiaohongshu/
 
 ---
 
-## 行为边界 / Operating boundaries
+## 行为边界
 
-### 中文
 - 优先真实相关图，轻卡片兜底
 - 不去水印，也不提供去水印指导
 - 自动学习是参考模式，不会偷偷改主配置
 - 运行产物是临时工作文件，不是长期内容库存
 
-### English
-- Prefer real relevant images first; use cards as fallback
-- Do not remove watermarks or instruct watermark removal
-- Treat auto learning as reference-only; do not silently rewrite the main profile
-- Generated runtime outputs are temporary working files, not a long-term local content library
-
 ---
 
-## GitHub / 单独仓库使用 / Standalone Git usage
+## 单独仓库使用
 
-如果你想把这个目录单独作为 Git 仓库管理：  
-If you want to manage only this directory as its own Git repository:
+如果你想把这个目录单独作为 Git 仓库管理：
 
 ```bash
 cd skills/xiaohongshu-ops
 git init
 ```
 
-建议 / Recommended:
-1. 保留本目录下的 `.gitignore`  
-   Keep the local `.gitignore` in this folder.
-2. 运行时账号配置留在仓库外，或者只公开脱敏样例  
-   Keep runtime account config outside this repo, or publish only sanitized examples.
-3. 在仓库首页说明本地 `data/xiaohongshu/` 结构  
-   Document the expected local `data/xiaohongshu/` layout in the repo homepage.
+建议：
+1. 保留本目录下的 `.gitignore`
+2. 运行时账号配置留在仓库外，或者只公开脱敏样例
+3. 在仓库首页说明本地 `data/xiaohongshu/` 结构
 
 ---
 
-## 注意事项 / Notes
+## 注意事项
 
-- 不要提交临时上传/测试输出  
-  Do not commit temporary upload/test outputs.
-- 不要提交浏览器 profile 或登录态  
-  Do not commit browser profiles or authenticated runtime state.
-- 如果公开 profile 示例，先检查是否包含账号偏好或私有运营信息  
-  If you publish profile examples, review them for account-specific or private operating preferences first.
+- 不要提交临时上传/测试输出
+- 不要提交浏览器 profile 或登录态
+- 如果公开 profile 示例，先检查是否包含账号偏好或私有运营信息
