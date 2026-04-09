@@ -2,23 +2,53 @@
 
 > 中文说明：见 [README.md](./README.md)
 
-An OpenClaw skill for end-to-end Xiaohongshu (RedNote) operations.
+An OpenClaw skill for **automated Xiaohongshu operations**, covering profile setup, content generation, image generation, publishing, and reference learning.
+
+![Xiaohongshu Ops Architecture](./assets/xiaohongshu-ops-architecture.svg)
 
 ---
 
-## What it does
+## What this is
 
+`xiaohongshu-ops` is a single-skill repository for automated Xiaohongshu operations, not just a one-off posting script.
+
+It is designed to consolidate the full Xiaohongshu workflow into one skill:
+- configure account-level operating rules
+- read local rules and learning notes
+- generate titles, body copy, and page structure
+- choose image strategy and generate visual assets
+- publish via a dedicated browser flow
+- keep learning title, image, and trend patterns in reference mode
+
+---
+
+## Core capabilities
+
+### 1. Automated operating profile setup
 - Configure a reusable Xiaohongshu operating profile
-- Read local operating rules and style notes from `data/xiaohongshu/`
-- Orchestrate the workflow from topic/angle to publish-ready assets
+- Read local rules and style notes from `data/xiaohongshu/`
+- Manage title/body limits, image mode, auto-learning settings, and publish preferences
+
+### 2. Automated content generation
+- Orchestrate the workflow from topic / angle to publish-ready assets
 - Generate Xiaohongshu-style titles, body copy, and page structure
 - Support mixed Chinese/English title rewriting within 20 characters
 - Keep body length within the configured limit
+
+### 3. Automated image asset generation
 - Support image modes: `stock`, `cards-lite`, `mixed`
 - Prefer real relevant imagery first and use lightweight cards as fallback
-- Assemble post assets such as `post.json`, `pages.json`, and PNG output directories
+- Produce `post.json`, `pages.json`, and PNG output directories as publish assets
+
+### 4. Automated Xiaohongshu publishing
 - Publish through the dedicated independent browser flow
-- Support daily reference-only auto learning without silently mutating the main profile
+- Use a dedicated browser profile to avoid mixing with the user's daily browser
+- Fit into a fully automated publishing pipeline
+
+### 5. Automated reference learning
+- Support daily reference-only auto learning
+- Learn title patterns, image style patterns, and relevant trends
+- Do not silently mutate the main profile; keep learning outputs as local reference material
 
 ---
 
@@ -30,6 +60,8 @@ xiaohongshu-ops/
 ├── README.en.md
 ├── SKILL.md
 ├── .gitignore
+├── assets/
+│   └── xiaohongshu-ops-architecture.svg
 ├── references/
 └── scripts/
 ```
@@ -55,6 +87,9 @@ On-demand reference docs for workflow, rules, image sourcing, and publish detail
 
 ### `scripts/`
 Low-freedom helper scripts for deterministic and repeatable execution.
+
+### `assets/`
+Static assets used for repository presentation or output.
 
 ### `data/xiaohongshu/`
 Local runtime configuration layer; it does not have to be published with the skill.
