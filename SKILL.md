@@ -44,6 +44,7 @@ Do not treat the user's normal browser or OpenClaw's shared browser profile as t
 ## Offer first-run publish test
 
 After setup, ask the user whether to do a first publish test.
+Default publish behavior is full automation unless the saved profile explicitly enables review-before-publish.
 
 Recommended wording:
 - 是否要先自动生成并准备发布一篇测试笔记，顺手验证小红书发布链路是否正常？
@@ -85,7 +86,28 @@ Use these scripts as low-freedom helpers when deterministic execution is better 
 
 ## Safety rule
 
-Default to the profile's publish preference. If the profile says review-before-publish, stop for review. If the profile allows direct publish and the user asks for publishing, use the independent browser path.
+Default to full automatic publish unless the profile says review-before-publish. If the profile says review-before-publish, stop for review. If the profile allows direct publish and the user asks for publishing, use the independent browser path.
+
+## Ownership boundary
+
+Treat `data/xiaohongshu/rules.md` as content policy only:
+- title/body limits
+- tone and wording rules
+- tag and image-style preferences
+
+Treat `data/xiaohongshu/profile.json` as operating config:
+- `reviewBeforePublish`
+- `publishPath`
+- `imageMode`
+- `defaultPages`
+- positioning, goals, audience, auto-learning
+
+Treat scripts as executable behavior:
+- publish routing
+- browser automation
+- image/card generation
+- temporary output handling
+- do not rewrite or truncate title/body content
 
 ## File convention
 
@@ -113,8 +135,9 @@ Read `references/content-rules.md` when generating Xiaohongshu copy.
 Read `data/xiaohongshu/rules.md` as the local source of truth for current Xiaohongshu operating rules.
 Current default rules:
 - title must be a natural phrase within 20 characters
-- mixed Chinese/English titles should preserve important English terms instead of clipping them mid-word
-- body should stay within 2000 characters
+- title must remain readable, complete, and attractive instead of being cut mid-phrase
+- language-aware handling can be used internally, but the visible rule is readability first and no broken titles
+- body should stay within 1000 characters
 
 ## Integration
 

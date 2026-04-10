@@ -5,10 +5,12 @@ These are the active Xiaohongshu content rules for this workspace.
 ## Title
 
 - Generate a natural title within **20 characters**
+- The title must remain readable and complete, not a broken half-sentence
 - Do not rely on blunt truncation as the primary strategy
 - Prefer semantic rewrite/compression
-- For mixed Chinese/English titles, preserve key English terms intact when possible (for example `Anthropic`, `OpenAI`, `harness`) instead of truncating them into broken fragments like `Anthro`
-- When a mixed-language title is too long, rewrite the whole phrase into a shorter natural title rather than clipping the English token midway
+- When a title is too long, rewrite the whole idea into a shorter natural title rather than clipping the original midway
+- Preserve the key concept and click value, not every word from the original title
+- Use language-aware handling only as an implementation detail; the actual user-facing rule is readability first, no broken titles, and stronger click appeal
 
 ## Body
 

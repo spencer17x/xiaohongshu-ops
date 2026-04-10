@@ -43,6 +43,8 @@ It is designed to consolidate the full Xiaohongshu workflow into one skill:
 ### 4. Automated Xiaohongshu publishing
 - Publish through the dedicated independent browser flow
 - Use a dedicated browser profile to avoid mixing with the user's daily browser
+- Default to full automatic publishing
+- Support switching to review-before-publish through config
 - Fit into a fully automated publishing pipeline
 
 ### 5. Automated reference learning
@@ -94,6 +96,11 @@ Static assets used for repository presentation or output.
 ### `data/xiaohongshu/`
 Local runtime configuration layer; it does not have to be published with the skill.
 
+Suggested ownership split:
+- `rules.md`: content policy such as title/body limits, tone, tag preferences, and image-style constraints
+- `profile.json`: stable operating config such as `reviewBeforePublish`, `imageMode`, `publishPath`, positioning, audience, and goals
+- `scripts/`: executable behavior such as asset generation, image/card creation, and browser automation
+
 ---
 
 ## Key scripts
@@ -114,6 +121,7 @@ Local runtime configuration layer; it does not have to be published with the ski
 - Prefer real relevant images first; use cards as fallback
 - Do not remove watermarks or instruct watermark removal
 - Treat auto learning as reference-only; do not silently rewrite the main profile
+- Default to full automatic publishing unless `reviewBeforePublish: true`
 - Generated runtime outputs are temporary working files, not a long-term local content library
 
 ---

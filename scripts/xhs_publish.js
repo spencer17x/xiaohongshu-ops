@@ -1,6 +1,5 @@
-const { chromium } = require('playwright');
-const fs = require('fs');
 const path = require('path');
+const { runPublishFlow } = require('./lib/publish_shared');
 
 function arg(name, fallback = undefined) {
   const idx = process.argv.indexOf(`--${name}`);
@@ -47,80 +46,19 @@ AI 最有价值的，不是惊艳你一次，
 
 #AI #人工智能 #AI工具 #效率提升 #工作流 #AI认知 #职场效率 #数字工具`);
 
-function getImages(dir) {
-  return fs.readdirSync(dir)
-    .filter(f => /\.(png|jpg|jpeg|webp)$/i.test(f))
-    .sort()
-    .map(f => path.join(dir, f));
-}
-
-async function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function clickByText(page, text) {
-  const locator = page.getByText(text, { exact: true }).first();
-  await locator.waitFor({ state: 'visible', timeout: 15000 });
-  await locator.click();
-}
-
-async function ensureImagePublishPage(page) {
-  if (!page.url().includes('target=image')) {
-    await page.goto('https://creator.xiaohongshu.com/publish/publish?from=tab_switch&target=image', { waitUntil: 'domcontentloaded' });
-    await page.waitForLoadState('networkidle').catch(() => {});
-  }
-}
-
-async function waitForLoginIfNeeded(page) {
-  const start = Date.now();
-  while (Date.now() - start < 10 * 60 * 1000) {
-    const url = page.url();
-    if (url.includes('creator.xiaohongshu.com/publish')) return;
-    await wait(1500);
-  }
-  throw new Error('Timed out waiting for login / publish page');
-}
-
 async function main() {
-  const images = getImages(ASSET_DIR);
-  if (!images.length) throw new Error(`No images found in ${ASSET_DIR}`);
-
-  const context = await chromium.launchPersistentContext(USER_DATA_DIR, {
-    headless: false,
-    channel: 'chrome',
+  const result = await runPublishFlow({
+    mode: 'review',
+    userDataDir: USER_DATA_DIR,
+    assetDir: ASSET_DIR,
+    title: TITLE,
+    body: BODY,
   });
 
-  const page = context.pages()[0] || await context.newPage();
-  await page.goto('https://creator.xiaohongshu.com/publish/publish?from=tab_switch&target=image', { waitUntil: 'domcontentloaded' });
-  await page.waitForLoadState('networkidle').catch(() => {});
-
-  await waitForLoginIfNeeded(page);
-  await ensureImagePublishPage(page);
-
-  let fileInput = page.locator('input[type="file"]').first();
-  try {
-    await fileInput.waitFor({ state: 'attached', timeout: 15000 });
-  } catch {
-    await clickByText(page, '上传图片').catch(() => {});
-    await wait(1000);
-    fileInput = page.locator('input[type="file"]').first();
-    await fileInput.waitFor({ state: 'attached', timeout: 15000 });
-  }
-
-  await fileInput.setInputFiles(images);
-  await wait(8000);
-
-  const titleBox = page.locator('input[placeholder*="标题"], textarea[placeholder*="标题"]').first();
-  await titleBox.waitFor({ state: 'visible', timeout: 30000 });
-  await titleBox.fill(TITLE);
-
-  const editor = page.locator('[contenteditable="true"]').last();
-  await editor.waitFor({ state: 'visible', timeout: 30000 });
-  await editor.click();
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A').catch(() => {});
-  await page.keyboard.type(BODY, { delay: 8 });
-
   console.log('READY_FOR_REVIEW');
-  console.log(`Images: ${images.length}`);
-  console.log(`Title: ${TITLE}`);
+  console.log(`Images: ${result.imagesCount}`);
+  console.log(`Title: ${result.title}`);
+  console.log(`PAGE_URL=${result.pageUrl}`);
   console.log('Draft filled. Please review in browser and publish manually.');
 }
 
